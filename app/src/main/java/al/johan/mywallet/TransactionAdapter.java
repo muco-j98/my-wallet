@@ -19,12 +19,14 @@ public class TransactionAdapter extends RecyclerView.Adapter {
         private ImageView iVTransactionIcon;
         private TextView tVTransactionAmount;
         private TextView tVTransactionDescription;
+        private TextView tvTransactionDate;
 
         public PositiveTransactionHolder(@NonNull View itemView) {
             super(itemView);
             iVTransactionIcon = itemView.findViewById(R.id.iVPositiveTransactionIcon);
             tVTransactionAmount = itemView.findViewById(R.id.tvPositiveTransactionAmount);
             tVTransactionDescription = itemView.findViewById(R.id.tvPositiveTransactionDescription);
+            tvTransactionDate = itemView.findViewById(R.id.tvPositiveTransactionDate);
         }
     }
 
@@ -32,12 +34,14 @@ public class TransactionAdapter extends RecyclerView.Adapter {
         private ImageView iVTransactionIcon;
         private TextView tVTransactionAmount;
         private TextView tVTransactionDescription;
+        private TextView tvTransactionDate;
 
         public NegativeTransactionHolder(@NonNull View itemView) {
             super(itemView);
             iVTransactionIcon = itemView.findViewById(R.id.iVNegativeTransactionIcon);
             tVTransactionAmount = itemView.findViewById(R.id.tvNegativeTransactionAmount);
             tVTransactionDescription = itemView.findViewById(R.id.tvNegativeTransactionDescription);
+            tvTransactionDate = itemView.findViewById(R.id.tvNegativeTransactionDate);
         }
     }
 
@@ -74,11 +78,13 @@ public class TransactionAdapter extends RecyclerView.Adapter {
                 ((PositiveTransactionHolder) holder).iVTransactionIcon.setImageResource(R.drawable.dollar_icon);
                 ((PositiveTransactionHolder) holder).tVTransactionAmount.setText(String.valueOf(currentTransaction.getAmount()));
                 ((PositiveTransactionHolder) holder).tVTransactionDescription.setText(currentTransaction.getDescription());
+                ((PositiveTransactionHolder) holder).tvTransactionDate.setText(currentTransaction.getCreationDate());
                 break;
             case 1:
                 ((NegativeTransactionHolder) holder).iVTransactionIcon.setImageResource(R.drawable.dollar_icon);
                 ((NegativeTransactionHolder) holder).tVTransactionAmount.setText(String.valueOf(currentTransaction.getAmount()));
                 ((NegativeTransactionHolder) holder).tVTransactionDescription.setText(currentTransaction.getDescription());
+                ((NegativeTransactionHolder) holder).tvTransactionDate.setText(currentTransaction.getCreationDate());
                 break;
         }
     }

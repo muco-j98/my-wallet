@@ -1,5 +1,7 @@
 package al.johan.mywallet;
 
+import org.w3c.dom.Text;
+
 import androidx.room.Entity;
 import androidx.room.PrimaryKey;
 
@@ -13,9 +15,12 @@ public class Transaction {
 
     private double amount;
 
-    public Transaction(String description, double amount) {
+    private String creationDate;
+
+    public Transaction(String description, double amount, String creationDate) {
         this.description = description;
         this.amount = amount;
+        this.creationDate = creationDate;
     }
 
     public void setId(int id) {
@@ -32,5 +37,9 @@ public class Transaction {
 
     public double getAmount() {
         return amount;
+    }
+
+    public String getCreationDate() {
+        return creationDate;
     }
 }

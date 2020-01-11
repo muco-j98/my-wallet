@@ -9,7 +9,7 @@ import androidx.room.Room;
 import androidx.room.RoomDatabase;
 import androidx.sqlite.db.SupportSQLiteDatabase;
 
-@Database(entities = Transaction.class, version = 3)
+@Database(entities = Transaction.class, version = 3, exportSchema = false)
 public abstract class TransactionDatabase extends RoomDatabase {
 
     private static TransactionDatabase instance;
@@ -44,8 +44,8 @@ public abstract class TransactionDatabase extends RoomDatabase {
 
         @Override
         protected Void doInBackground(Void... voids) {
-            mTransactionDao.insert(new Transaction("Buke ne Stop&Shop", -7));
-            mTransactionDao.insert(new Transaction("Tips nga xhamat", 25));
+            mTransactionDao.insert(new Transaction("Buke ne Stop&Shop", -7, "3/4"));
+            mTransactionDao.insert(new Transaction("Tips nga xhamat", 25, "5/5"));
             return null;
         }
     }

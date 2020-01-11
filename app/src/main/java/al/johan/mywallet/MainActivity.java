@@ -8,12 +8,19 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import android.os.Bundle;
+import android.view.View;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.google.android.material.floatingactionbutton.FloatingActionButton;
+
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
+import java.util.Calendar;
+import java.util.Date;
 import java.util.List;
 
-public class MainActivity extends AppCompatActivity {
+public class MainActivity extends AppCompatActivity implements CreateTransactionDialog.CreateTransactionDialogListener {
     private TransactionViewModel transactionViewModel;
     double totalAmount = 0;
 
@@ -23,6 +30,14 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
 
         final TextView tVTotalAmount = findViewById(R.id.tvTotalAmount);
+
+        FloatingActionButton btnAddTransaction = findViewById(R.id.btnAddTransaction);
+        btnAddTransaction.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                openDialog();
+            }
+        });
 
         RecyclerView recyclerView = findViewById(R.id.transaction_recycler_view);
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
@@ -36,11 +51,29 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onChanged(List<Transaction> transactions) {
                 adapter.setTransactions(transactions);
+
                 for(int i = 0; i < transactions.size(); i++) {
                     totalAmount += transactions.get(i).getAmount();
                 }
                 tVTotalAmount.setText(String.valueOf(totalAmount));
             }
         });
+    }
+
+    private void openDialog() {
+        CreateTransactionDialog createTransactionDialog = new CreateTransactionDialog();
+        createTransactionDialog.show(getSupportFragmentManager(), "create fragment dialog");
+    }
+
+    @Override
+    public void applyCreation(String description, double amount) {
+        DateFormat sortable = new SimpleDateFormat("dd-MM");
+        Date now = Calendar.getInstance().getTime();
+        String timestampish = sortable.format(now);
+
+        Transaction transaction = new Transaction(description, amount, timestampish);
+        transactionViewModel.insert(transaction);
+
+        Toast.makeText(this, "Transaction added!", Toast.LENGTH_SHORT).show();
     }
 }
