@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:background="@color/colorPrimaryDark"
+    android:layout_height="match_parent"
+    android:orientation="vertical">
+
+    <TextView
+        android:id="@+id/tvEmptyTransactions"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="10sp"
+        android:textColor="#FFF"
+        android:fontFamily="@font/amiko_bold"
+        android:gravity="center_horizontal"
+        android:text="@string/empty_transactions"
+        android:textSize="20sp" />
+
+</RelativeLayout>
