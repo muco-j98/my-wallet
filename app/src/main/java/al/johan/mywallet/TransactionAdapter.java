@@ -15,6 +15,15 @@ import androidx.recyclerview.widget.RecyclerView;
 public class TransactionAdapter extends RecyclerView.Adapter {
     private List<Transaction> transactions = new ArrayList<>();
 
+    class EmptyTransactionHolder extends RecyclerView.ViewHolder {
+        public TextView tvEmptyTransactions;
+
+        public EmptyTransactionHolder(@NonNull View itemView) {
+            super(itemView);
+            tvEmptyTransactions = itemView.findViewById(R.id.tvEmptyTransactions);
+        }
+    }
+
     class PositiveTransactionHolder extends RecyclerView.ViewHolder {
         private ImageView iVTransactionIcon;
         private TextView tVTransactionAmount;
@@ -48,10 +57,14 @@ public class TransactionAdapter extends RecyclerView.Adapter {
     @Override
     public int getItemViewType(int position) {
         Transaction currentTransaction = transactions.get(position);
-        if (currentTransaction.getAmount() > 0) {
-            return 0;
+        if (transactions.isEmpty()) {
+            return -1;
         } else {
-            return 1;
+            if (currentTransaction.getAmount() > 0) {
+                return 0;
+            } else {
+                return 1;
+            }
         }
     }
 
@@ -60,6 +73,9 @@ public class TransactionAdapter extends RecyclerView.Adapter {
     public RecyclerView.ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
         View view;
         switch (viewType) {
+            case -1:
+                view = LayoutInflater.from(parent.getContext()).inflate(R.layout.empty_transactions, parent, false);
+                return new EmptyTransactionHolder(view);
             case 0:
                 view = LayoutInflater.from(parent.getContext()).inflate(R.layout.positive_transcation_item, parent, false);
                 return new PositiveTransactionHolder(view);
@@ -99,4 +115,7 @@ public class TransactionAdapter extends RecyclerView.Adapter {
         notifyDataSetChanged();
     }
 
+    public Transaction getTransactionAt(int position) {
+        return transactions.get(position);
+    }
 }
