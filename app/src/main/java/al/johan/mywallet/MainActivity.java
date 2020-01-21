@@ -13,6 +13,7 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.view.View;
+import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -27,10 +28,11 @@ import java.util.List;
 public class MainActivity extends AppCompatActivity implements CreateTransactionDialog.CreateTransactionDialogListener {
     private TransactionViewModel transactionViewModel;
     private TextView tvTotalAmount;
+    private EditText etInitialAmount;
     double totalAmount, initialAmount;
     private final int REQUEST_CODE = 1;
     public static final String SHARED_PREFS = "sharedPrefs";
-    public static final String TOTAL_AMOUNT = "totalAmount";
+    public static final String INITIAL_AMOUNT = "initialAmount";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -43,7 +45,11 @@ public class MainActivity extends AppCompatActivity implements CreateTransaction
 
         if (firstStart) {
             showInitialActivity();
+            etInitialAmount = findViewById(R.id.etInitialAmount);
         }
+
+        loadData();
+
 
         FloatingActionButton btnAddTransaction = findViewById(R.id.btnAddTransaction);
         btnAddTransaction.setOnClickListener(new View.OnClickListener() {
@@ -92,8 +98,8 @@ public class MainActivity extends AppCompatActivity implements CreateTransaction
         if (requestCode == REQUEST_CODE) {
             if (resultCode == RESULT_OK) {
                 initialAmount = data.getDoubleExtra("initialAmount", 0);
-                saveData();
                 Toast.makeText(this, "value is + " + initialAmount, Toast.LENGTH_SHORT).show();
+                updateViews();
             }
         }
     }
@@ -142,11 +148,12 @@ public class MainActivity extends AppCompatActivity implements CreateTransaction
         editor.apply();
     }
 
-    //in progress
-    public void saveData() {
+    public void loadData() {
         SharedPreferences sharedPreferences = getSharedPreferences(SHARED_PREFS, MODE_PRIVATE);
-        SharedPreferences.Editor editor = sharedPreferences.edit();
+        initialAmount = sharedPreferences.getFloat(INITIAL_AMOUNT, 0);
+    }
 
-        editor.putFloat(TOTAL_AMOUNT, Float.parseFloat(tvTotalAmount.getText().toString()));
+    public void updateViews() {
+        tvTotalAmount.setText(String.valueOf(initialAmount));
     }
 }
