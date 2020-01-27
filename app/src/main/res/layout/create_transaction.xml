@@ -22,4 +22,11 @@
         android:hint="@string/create_amount"
         android:inputType="numberDecimal|numberSigned" />
 
+    <Spinner
+        android:id="@+id/spinner_categories"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:spinnerMode="dropdown"
+        android:layout_marginTop="10dp"/>
+
 </LinearLayout>

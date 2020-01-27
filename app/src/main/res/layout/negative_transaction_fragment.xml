@@ -39,22 +39,31 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_alignParentEnd="true"
+            android:layout_alignBottom="@id/tvNegativeTransactionDescription"
             android:text="12/12/2020"
             android:textColor="#FFF"
-            android:textSize="12sp" />
+            android:textSize="13sp" />
 
         <TextView
             android:id="@+id/tvNegativeTransactionDescription"
-            android:layout_width="match_parent"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_below="@id/tvNegativeTransactionAmount"
             android:layout_alignStart="@id/tvNegativeTransactionAmount"
             android:ellipsize="end"
             android:fontFamily="@font/amiko_bold"
             android:maxLines="1"
+            android:textSize="17sp"
             android:text="Description"
-            android:textColor="#FFF"
-            android:textSize="17sp" />
+            android:textColor="#FFF" />
+
+        <ImageView
+            android:id="@+id/iVTransactionCategory"
+            android:layout_width="30dp"
+            android:layout_height="30dp"
+            android:src="@drawable/food"
+            android:layout_marginEnd="20dp"
+            android:layout_alignParentEnd="true"/>
 
 
     </RelativeLayout>

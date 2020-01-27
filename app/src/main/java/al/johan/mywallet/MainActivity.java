@@ -9,8 +9,10 @@ import androidx.recyclerview.widget.ItemTouchHelper;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.EditText;
@@ -36,20 +38,31 @@ public class MainActivity extends AppCompatActivity implements CreateTransaction
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+        new Thread(new Runnable() {
+            @Override
+            public void run() {
+                SharedPreferences prefs = getSharedPreferences("prefs", MODE_PRIVATE);
+                boolean firstStart = prefs.getBoolean("firstStart", true);
+
+                if (firstStart) {
+                    new openActivityAsync(getApplicationContext()).execute();
+                }
+            }
+        }).start();
+
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        SharedPreferences prefs = getSharedPreferences("prefs", MODE_PRIVATE);
-        boolean firstStart = prefs.getBoolean("firstStart", true);
+//        SharedPreferences prefs = getSharedPreferences("prefs", MODE_PRIVATE);
+//        boolean firstStart = prefs.getBoolean("firstStart", true);
         tvTotalAmount = findViewById(R.id.tvTotalAmount);
 
-        if (firstStart) {
-            showInitialActivity();
-            etInitialAmount = findViewById(R.id.etInitialAmount);
-        }
+//        if (firstStart) {
+//            showInitialActivity();
+//            etInitialAmount = findViewById(R.id.etInitialAmount);
+//        }
 
         loadData();
-
 
         FloatingActionButton btnAddTransaction = findViewById(R.id.btnAddTransaction);
         btnAddTransaction.setOnClickListener(new View.OnClickListener() {
@@ -110,12 +123,12 @@ public class MainActivity extends AppCompatActivity implements CreateTransaction
     }
 
     @Override
-    public void applyCreation(String description, double amount) {
+    public void applyCreation(String description, double amount, String category) {
         DateFormat sortable = new SimpleDateFormat("dd-MM");
         Date now = Calendar.getInstance().getTime();
         String timestampish = sortable.format(now);
 
-        Transaction transaction = new Transaction(description, amount, timestampish);
+        Transaction transaction = new Transaction(description, amount, timestampish, category);
         transactionViewModel.insert(transaction);
 
         Toast.makeText(this, "Transaction added!", Toast.LENGTH_SHORT).show();
@@ -139,7 +152,7 @@ public class MainActivity extends AppCompatActivity implements CreateTransaction
     }
 
     private void showInitialActivity() {
-        Intent intent = new Intent(this, InitialActivity.class);
+        final Intent intent = new Intent(this, InitialActivity.class);
         startActivityForResult(intent, REQUEST_CODE);
 
         SharedPreferences prefs = getSharedPreferences("prefs", MODE_PRIVATE);
@@ -155,5 +168,24 @@ public class MainActivity extends AppCompatActivity implements CreateTransaction
 
     public void updateViews() {
         tvTotalAmount.setText(String.valueOf(initialAmount));
+    }
+
+    public class openActivityAsync extends AsyncTask<Void, Void, Void> {
+        private Context context;
+
+        public openActivityAsync(Context context){
+            this.context=context;
+        }
+
+        @Override
+        protected Void doInBackground(Void... voids) {
+            return null;
+        }
+
+        @Override
+        protected void onPostExecute(Void aVoid) {
+            super.onPostExecute(aVoid);
+            showInitialActivity();
+        }
     }
 }

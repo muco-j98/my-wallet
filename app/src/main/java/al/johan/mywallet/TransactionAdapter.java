@@ -44,6 +44,7 @@ public class TransactionAdapter extends RecyclerView.Adapter {
         private TextView tVTransactionAmount;
         private TextView tVTransactionDescription;
         private TextView tvTransactionDate;
+        private ImageView ivTransactionCategory;
 
         public NegativeTransactionHolder(@NonNull View itemView) {
             super(itemView);
@@ -51,6 +52,7 @@ public class TransactionAdapter extends RecyclerView.Adapter {
             tVTransactionAmount = itemView.findViewById(R.id.tvNegativeTransactionAmount);
             tVTransactionDescription = itemView.findViewById(R.id.tvNegativeTransactionDescription);
             tvTransactionDate = itemView.findViewById(R.id.tvNegativeTransactionDate);
+            ivTransactionCategory = itemView.findViewById(R.id.iVTransactionCategory);
         }
     }
 
@@ -101,6 +103,14 @@ public class TransactionAdapter extends RecyclerView.Adapter {
                 ((NegativeTransactionHolder) holder).tVTransactionAmount.setText(String.valueOf(currentTransaction.getAmount()));
                 ((NegativeTransactionHolder) holder).tVTransactionDescription.setText(currentTransaction.getDescription());
                 ((NegativeTransactionHolder) holder).tvTransactionDate.setText(currentTransaction.getCreationDate());
+                if (currentTransaction.getCategory().equals("Food"))
+                    ((NegativeTransactionHolder) holder).ivTransactionCategory.setImageResource(R.drawable.food);
+                else if (currentTransaction.getCategory().equals("Transport"))
+                    ((NegativeTransactionHolder) holder).ivTransactionCategory.setImageResource(R.drawable.bus);
+                else if (currentTransaction.getCategory().equals("Housing"))
+                    ((NegativeTransactionHolder) holder).ivTransactionCategory.setImageResource(R.drawable.home);
+                else if (currentTransaction.getCategory().equals("Clothing"))
+                    ((NegativeTransactionHolder) holder).ivTransactionCategory.setImageResource(R.drawable.tshirt);
                 break;
         }
     }

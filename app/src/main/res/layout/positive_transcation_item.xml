@@ -39,14 +39,15 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_alignParentEnd="true"
+            android:layout_alignBottom="@id/tvPositiveTransactionDescription"
             android:text="12/12/2020"
             android:textColor="#FFF"
+            android:layout_marginEnd="10dp"
             android:textSize="13sp" />
-
 
         <TextView
             android:id="@+id/tvPositiveTransactionDescription"
-            android:layout_width="match_parent"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_below="@id/tvPositiveTransactionAmount"
             android:layout_alignStart="@id/tvPositiveTransactionAmount"
@@ -56,7 +57,6 @@
             android:textSize="17sp"
             android:text="Description"
             android:textColor="#FFF" />
-
 
     </RelativeLayout>
 
