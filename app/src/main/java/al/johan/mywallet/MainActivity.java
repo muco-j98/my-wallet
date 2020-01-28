@@ -29,8 +29,7 @@ import java.util.List;
 
 public class MainActivity extends AppCompatActivity implements CreateTransactionDialog.CreateTransactionDialogListener {
     private TransactionViewModel transactionViewModel;
-    private TextView tvTotalAmount;
-    private EditText etInitialAmount;
+    private TextView tvTotalAmount, tvEmpty, tvEmptyDesc;
     double totalAmount, initialAmount;
     private final int REQUEST_CODE = 1;
     public static final String SHARED_PREFS = "sharedPrefs";
@@ -53,6 +52,11 @@ public class MainActivity extends AppCompatActivity implements CreateTransaction
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
+        tvEmpty = findViewById(R.id.tvEmptyText);
+        tvEmptyDesc = findViewById(R.id.tVEmptyTransactionDesc);
+        tvEmpty.setVisibility(View.GONE);
+        tvEmptyDesc.setVisibility(View.GONE);
+
 //        SharedPreferences prefs = getSharedPreferences("prefs", MODE_PRIVATE);
 //        boolean firstStart = prefs.getBoolean("firstStart", true);
         tvTotalAmount = findViewById(R.id.tvTotalAmount);
@@ -72,7 +76,7 @@ public class MainActivity extends AppCompatActivity implements CreateTransaction
             }
         });
 
-        RecyclerView recyclerView = findViewById(R.id.transaction_recycler_view);
+        final RecyclerView recyclerView = findViewById(R.id.transaction_recycler_view);
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
         recyclerView.setHasFixedSize(true);
 
@@ -85,6 +89,16 @@ public class MainActivity extends AppCompatActivity implements CreateTransaction
             public void onChanged(List<Transaction> transactions) {
                 adapter.setTransactions(transactions);
                 tvTotalAmount.setText(String.valueOf(calculateTotal(transactions)));
+
+                if (transactions.isEmpty()) {
+                    recyclerView.setVisibility(View.GONE);
+                    tvEmpty.setVisibility(View.VISIBLE);
+                    tvEmptyDesc.setVisibility(View.VISIBLE);
+                } else {
+                    recyclerView.setVisibility(View.VISIBLE);
+                    tvEmpty.setVisibility(View.GONE);
+                    tvEmptyDesc.setVisibility(View.GONE);
+                }
             }
         });
 
@@ -110,9 +124,11 @@ public class MainActivity extends AppCompatActivity implements CreateTransaction
         super.onActivityResult(requestCode, resultCode, data);
         if (requestCode == REQUEST_CODE) {
             if (resultCode == RESULT_OK) {
-                initialAmount = data.getDoubleExtra("initialAmount", 0);
-                Toast.makeText(this, "value is + " + initialAmount, Toast.LENGTH_SHORT).show();
-                updateViews();
+                if (data != null) {
+                    initialAmount = data.getDoubleExtra("initialAmount", 0);
+                    initialAmount = Math.round(initialAmount * 100.0) / 100.0;
+                }
+                tvTotalAmount.setText(String.valueOf(initialAmount));
             }
         }
     }
@@ -139,6 +155,7 @@ public class MainActivity extends AppCompatActivity implements CreateTransaction
         for(int i = 0; i < transactions.size(); i++) {
             totalAmount += transactions.get(i).getAmount();
         }
+        totalAmount = Math.round(totalAmount * 100.0) / 100.0;
         return totalAmount;
     }
 
@@ -148,6 +165,7 @@ public class MainActivity extends AppCompatActivity implements CreateTransaction
         } else {
             totalAmount += transaction.getAmount();
         }
+        totalAmount = Math.round(totalAmount * 100.0) / 100.0;
         return totalAmount;
     }
 
@@ -164,10 +182,6 @@ public class MainActivity extends AppCompatActivity implements CreateTransaction
     public void loadData() {
         SharedPreferences sharedPreferences = getSharedPreferences(SHARED_PREFS, MODE_PRIVATE);
         initialAmount = sharedPreferences.getFloat(INITIAL_AMOUNT, 0);
-    }
-
-    public void updateViews() {
-        tvTotalAmount.setText(String.valueOf(initialAmount));
     }
 
     public class openActivityAsync extends AsyncTask<Void, Void, Void> {

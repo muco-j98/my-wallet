@@ -5,4 +5,7 @@
     <string name="create_description">Description</string>
     <string name="create_amount">Amount</string>
     <string name="empty_transactions">You have not added any transactions</string>
+    <string name="description">Description</string>
+    <string name="no_transactions">No Transactions</string>
+    <string name="add_a_transaction_by_pressing_the_button">Add a transaction by pressing the + button</string>
 </resources>

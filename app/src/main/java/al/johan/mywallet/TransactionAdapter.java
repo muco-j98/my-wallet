@@ -15,15 +15,6 @@ import androidx.recyclerview.widget.RecyclerView;
 public class TransactionAdapter extends RecyclerView.Adapter {
     private List<Transaction> transactions = new ArrayList<>();
 
-    class EmptyTransactionHolder extends RecyclerView.ViewHolder {
-        public TextView tvEmptyTransactions;
-
-        public EmptyTransactionHolder(@NonNull View itemView) {
-            super(itemView);
-            tvEmptyTransactions = itemView.findViewById(R.id.tvEmptyTransactions);
-        }
-    }
-
     class PositiveTransactionHolder extends RecyclerView.ViewHolder {
         private ImageView iVTransactionIcon;
         private TextView tVTransactionAmount;
@@ -75,9 +66,6 @@ public class TransactionAdapter extends RecyclerView.Adapter {
     public RecyclerView.ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
         View view;
         switch (viewType) {
-            case -1:
-                view = LayoutInflater.from(parent.getContext()).inflate(R.layout.empty_transactions, parent, false);
-                return new EmptyTransactionHolder(view);
             case 0:
                 view = LayoutInflater.from(parent.getContext()).inflate(R.layout.positive_transcation_item, parent, false);
                 return new PositiveTransactionHolder(view);
@@ -91,26 +79,33 @@ public class TransactionAdapter extends RecyclerView.Adapter {
     @Override
     public void onBindViewHolder(@NonNull RecyclerView.ViewHolder holder, int position) {
         Transaction currentTransaction = transactions.get(position);
+        double transactionAmount = Math.round(currentTransaction.getAmount() * 100.0) / 100.0;
         switch (holder.getItemViewType()) {
             case 0:
                 ((PositiveTransactionHolder) holder).iVTransactionIcon.setImageResource(R.drawable.dollar_icon);
-                ((PositiveTransactionHolder) holder).tVTransactionAmount.setText(String.valueOf(currentTransaction.getAmount()));
+                ((PositiveTransactionHolder) holder).tVTransactionAmount.setText(String.valueOf(transactionAmount));
                 ((PositiveTransactionHolder) holder).tVTransactionDescription.setText(currentTransaction.getDescription());
                 ((PositiveTransactionHolder) holder).tvTransactionDate.setText(currentTransaction.getCreationDate());
                 break;
             case 1:
                 ((NegativeTransactionHolder) holder).iVTransactionIcon.setImageResource(R.drawable.dollar_icon);
-                ((NegativeTransactionHolder) holder).tVTransactionAmount.setText(String.valueOf(currentTransaction.getAmount()));
+                ((NegativeTransactionHolder) holder).tVTransactionAmount.setText(String.valueOf(transactionAmount));
                 ((NegativeTransactionHolder) holder).tVTransactionDescription.setText(currentTransaction.getDescription());
                 ((NegativeTransactionHolder) holder).tvTransactionDate.setText(currentTransaction.getCreationDate());
-                if (currentTransaction.getCategory().equals("Food"))
-                    ((NegativeTransactionHolder) holder).ivTransactionCategory.setImageResource(R.drawable.food);
-                else if (currentTransaction.getCategory().equals("Transport"))
-                    ((NegativeTransactionHolder) holder).ivTransactionCategory.setImageResource(R.drawable.bus);
-                else if (currentTransaction.getCategory().equals("Housing"))
-                    ((NegativeTransactionHolder) holder).ivTransactionCategory.setImageResource(R.drawable.home);
-                else if (currentTransaction.getCategory().equals("Clothing"))
-                    ((NegativeTransactionHolder) holder).ivTransactionCategory.setImageResource(R.drawable.tshirt);
+                switch (currentTransaction.getCategory()) {
+                    case "Food":
+                        ((NegativeTransactionHolder) holder).ivTransactionCategory.setImageResource(R.drawable.food);
+                        break;
+                    case "Transport":
+                        ((NegativeTransactionHolder) holder).ivTransactionCategory.setImageResource(R.drawable.bus);
+                        break;
+                    case "Housing":
+                        ((NegativeTransactionHolder) holder).ivTransactionCategory.setImageResource(R.drawable.home);
+                        break;
+                    case "Clothing":
+                        ((NegativeTransactionHolder) holder).ivTransactionCategory.setImageResource(R.drawable.tshirt);
+                        break;
+                }
                 break;
         }
     }

@@ -55,7 +55,7 @@
             android:fontFamily="@font/amiko_bold"
             android:maxLines="1"
             android:textSize="17sp"
-            android:text="Description"
+            android:text="@string/description"
             android:textColor="#FFF" />
 
     </RelativeLayout>

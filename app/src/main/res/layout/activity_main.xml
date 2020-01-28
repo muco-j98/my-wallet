@@ -40,6 +40,25 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent" />
 
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:id="@+id/tvEmptyText"
+            android:text="@string/no_transactions"
+            android:fontFamily="@font/amiko_bold"
+            android:textSize="25sp"
+            android:textColor="#FFF"
+            android:gravity="center_horizontal"
+            />
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:id="@+id/tVEmptyTransactionDesc"
+            android:text="@string/add_a_transaction_by_pressing_the_button"
+            android:textColor="#FFF"
+            android:gravity="center_horizontal" />
+
     </LinearLayout>
 
     <com.google.android.material.floatingactionbutton.FloatingActionButton
