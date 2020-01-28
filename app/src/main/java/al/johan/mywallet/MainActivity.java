@@ -36,19 +36,18 @@ public class MainActivity extends AppCompatActivity implements CreateTransaction
     public static final String INITIAL_AMOUNT = "initialAmount";
 
     @Override
+    protected void onResume() {
+        super.onResume();
+        SharedPreferences prefs = getSharedPreferences("prefs", MODE_PRIVATE);
+        boolean firstStart = prefs.getBoolean("firstStart", true);
+
+        if (firstStart) {
+            showInitialActivity();
+        }
+    }
+
+    @Override
     protected void onCreate(Bundle savedInstanceState) {
-        new Thread(new Runnable() {
-            @Override
-            public void run() {
-                SharedPreferences prefs = getSharedPreferences("prefs", MODE_PRIVATE);
-                boolean firstStart = prefs.getBoolean("firstStart", true);
-
-                if (firstStart) {
-                    new openActivityAsync(getApplicationContext()).execute();
-                }
-            }
-        }).start();
-
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
@@ -56,15 +55,7 @@ public class MainActivity extends AppCompatActivity implements CreateTransaction
         tvEmptyDesc = findViewById(R.id.tVEmptyTransactionDesc);
         tvEmpty.setVisibility(View.GONE);
         tvEmptyDesc.setVisibility(View.GONE);
-
-//        SharedPreferences prefs = getSharedPreferences("prefs", MODE_PRIVATE);
-//        boolean firstStart = prefs.getBoolean("firstStart", true);
         tvTotalAmount = findViewById(R.id.tvTotalAmount);
-
-//        if (firstStart) {
-//            showInitialActivity();
-//            etInitialAmount = findViewById(R.id.etInitialAmount);
-//        }
 
         loadData();
 
@@ -119,6 +110,8 @@ public class MainActivity extends AppCompatActivity implements CreateTransaction
         }).attachToRecyclerView(recyclerView);
     }
 
+
+
     @Override
     protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
@@ -126,7 +119,7 @@ public class MainActivity extends AppCompatActivity implements CreateTransaction
             if (resultCode == RESULT_OK) {
                 if (data != null) {
                     initialAmount = data.getDoubleExtra("initialAmount", 0);
-                    initialAmount = Math.round(initialAmount * 100.0) / 100.0;
+                    roundToTwoDigits(initialAmount);
                 }
                 tvTotalAmount.setText(String.valueOf(initialAmount));
             }
@@ -155,7 +148,7 @@ public class MainActivity extends AppCompatActivity implements CreateTransaction
         for(int i = 0; i < transactions.size(); i++) {
             totalAmount += transactions.get(i).getAmount();
         }
-        totalAmount = Math.round(totalAmount * 100.0) / 100.0;
+        roundToTwoDigits(totalAmount);
         return totalAmount;
     }
 
@@ -165,8 +158,13 @@ public class MainActivity extends AppCompatActivity implements CreateTransaction
         } else {
             totalAmount += transaction.getAmount();
         }
-        totalAmount = Math.round(totalAmount * 100.0) / 100.0;
+        roundToTwoDigits(totalAmount);
         return totalAmount;
+    }
+
+    public void loadData() {
+        SharedPreferences sharedPreferences = getSharedPreferences(SHARED_PREFS, MODE_PRIVATE);
+        initialAmount = sharedPreferences.getFloat(INITIAL_AMOUNT, 0);
     }
 
     private void showInitialActivity() {
@@ -179,27 +177,8 @@ public class MainActivity extends AppCompatActivity implements CreateTransaction
         editor.apply();
     }
 
-    public void loadData() {
-        SharedPreferences sharedPreferences = getSharedPreferences(SHARED_PREFS, MODE_PRIVATE);
-        initialAmount = sharedPreferences.getFloat(INITIAL_AMOUNT, 0);
-    }
-
-    public class openActivityAsync extends AsyncTask<Void, Void, Void> {
-        private Context context;
-
-        public openActivityAsync(Context context){
-            this.context=context;
-        }
-
-        @Override
-        protected Void doInBackground(Void... voids) {
-            return null;
-        }
-
-        @Override
-        protected void onPostExecute(Void aVoid) {
-            super.onPostExecute(aVoid);
-            showInitialActivity();
-        }
+    public double roundToTwoDigits(double number) {
+        number = Math.round(number * 100.0) / 100.0;
+        return number;
     }
 }

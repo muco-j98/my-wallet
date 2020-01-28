@@ -55,4 +55,9 @@ public class InitialActivity extends AppCompatActivity {
         editor.putFloat(INITIAL_AMOUNT, Float.parseFloat(etInitialAmount.getText().toString()));
         editor.apply();
     }
+
+    @Override
+    public void onBackPressed() {
+
+    }
 }
