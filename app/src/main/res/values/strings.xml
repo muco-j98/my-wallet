@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">My Wallet</string>
+    <string name="app_name">Wally</string>
     <string name="amount_question_second">amount</string>
     <string name="amount_question_first">What is your current</string>
     <string name="create_description">Description</string>
