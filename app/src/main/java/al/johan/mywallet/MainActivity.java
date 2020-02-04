@@ -15,6 +15,7 @@ import android.content.SharedPreferences;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.view.View;
+import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -30,6 +31,7 @@ import java.util.List;
 public class MainActivity extends AppCompatActivity implements CreateTransactionDialog.CreateTransactionDialogListener {
     private TransactionViewModel transactionViewModel;
     private TextView tvTotalAmount, tvEmpty, tvEmptyDesc;
+    private FloatingActionButton btnChart;
     double totalAmount, initialAmount;
     private final int REQUEST_CODE = 1;
     public static final String SHARED_PREFS = "sharedPrefs";
@@ -56,6 +58,7 @@ public class MainActivity extends AppCompatActivity implements CreateTransaction
         tvEmpty.setVisibility(View.GONE);
         tvEmptyDesc.setVisibility(View.GONE);
         tvTotalAmount = findViewById(R.id.tvTotalAmount);
+        btnChart = findViewById(R.id.btnChart);
 
         loadData();
 
@@ -108,9 +111,15 @@ public class MainActivity extends AppCompatActivity implements CreateTransaction
                 Toast.makeText(MainActivity.this, "Transaction Deleted", Toast.LENGTH_SHORT).show();
             }
         }).attachToRecyclerView(recyclerView);
+
+        btnChart.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(getApplicationContext(), ChartActivity.class);
+                startActivity(intent);
+            }
+        });
     }
-
-
 
     @Override
     protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {

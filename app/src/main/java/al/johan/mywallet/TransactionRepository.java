@@ -11,11 +11,14 @@ public class TransactionRepository {
 
     private TransactionDao transactionDao;
     private LiveData<List<Transaction>> allTransactions;
+    private LiveData<List<Transaction>> allNegativeTransactionsWithinDate;
+    private String date;
 
     public TransactionRepository(Application application) {
         TransactionDatabase database = TransactionDatabase.getInstance(application);
         transactionDao = database.transactionDao();
         allTransactions = transactionDao.getAllTransactions();
+        allNegativeTransactionsWithinDate = transactionDao.getNegativeTransactionsWithinDate();
     }
 
     public void insert(Transaction transaction) {
@@ -32,6 +35,10 @@ public class TransactionRepository {
 
     public LiveData<List<Transaction>> getAllTransactions() {
         return allTransactions;
+    }
+
+    public LiveData<List<Transaction>> getAllNegativeTransactionsWithinDate() {
+        return allNegativeTransactionsWithinDate;
     }
 
     private static class InsertTransactionAsyncTask extends AsyncTask<Transaction, Void, Void> {

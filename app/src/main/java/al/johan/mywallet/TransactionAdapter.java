@@ -96,7 +96,7 @@ public class TransactionAdapter extends RecyclerView.Adapter {
                     case "Food":
                         ((NegativeTransactionHolder) holder).ivTransactionCategory.setImageResource(R.drawable.food);
                         break;
-                    case "Transport":
+                    case "Transportation":
                         ((NegativeTransactionHolder) holder).ivTransactionCategory.setImageResource(R.drawable.bus);
                         break;
                     case "Housing":

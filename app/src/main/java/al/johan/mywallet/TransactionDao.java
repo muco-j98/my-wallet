@@ -22,4 +22,7 @@ public interface TransactionDao {
 
     @Query("SELECT * FROM transaction_table ORDER BY id DESC")
     LiveData<List<Transaction>> getAllTransactions();
+
+    @Query("SELECT * FROM transaction_table WHERE amount < 0")
+    LiveData<List<Transaction>> getNegativeTransactionsWithinDate();
 }

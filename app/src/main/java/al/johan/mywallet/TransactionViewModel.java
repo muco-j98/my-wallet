@@ -11,11 +11,13 @@ import androidx.lifecycle.LiveData;
 public class TransactionViewModel extends AndroidViewModel {
     private TransactionRepository repository;
     private LiveData<List<Transaction>> allTransactions;
+    private LiveData<List<Transaction>> allNegativeTransactionsBetweenDate;
 
     public TransactionViewModel(@NonNull Application application) {
         super(application);
         repository = new TransactionRepository(application);
         allTransactions = repository.getAllTransactions();
+        allNegativeTransactionsBetweenDate = repository.getAllNegativeTransactionsWithinDate();
     }
 
     public void insert(Transaction transaction) {
@@ -32,5 +34,9 @@ public class TransactionViewModel extends AndroidViewModel {
 
     public LiveData<List<Transaction>> getAllTransactions() {
         return allTransactions;
+    }
+
+    public LiveData<List<Transaction>> getAllNegativeTransactionsBetweenDate() {
+        return allNegativeTransactionsBetweenDate;
     }
 }

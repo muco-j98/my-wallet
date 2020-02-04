@@ -16,6 +16,8 @@ import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.google.android.material.textfield.TextInputEditText;
+
 import java.util.ArrayList;
 
 import androidx.annotation.NonNull;
@@ -24,8 +26,8 @@ import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatDialogFragment;
 
 public class CreateTransactionDialog extends AppCompatDialogFragment {
-    private EditText etDescription;
-    private EditText etAmount;
+    private TextInputEditText etDescription;
+    private TextInputEditText etAmount;
     private CreateTransactionDialogListener listener;
     private ArrayList<CategoryItem> categoryList;
     private CategoryAdapter categoryAdapter;

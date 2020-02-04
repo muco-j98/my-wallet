@@ -1,32 +1,47 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
     android:padding="16dp">
 
-    <EditText
-        android:id="@+id/etCreateTransactionDescription"
+    <com.google.android.material.textfield.TextInputLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginBottom="10dp"
-        android:ems="10"
-        android:hint="@string/create_description"
-        android:inputType="textPersonName" />
+        android:hint="@string/create_description">
 
-    <EditText
-        android:id="@+id/etCreateTransactionAmount"
+        <com.google.android.material.textfield.TextInputEditText
+            android:id="@+id/etCreateTransactionDescription"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="10dp"
+            android:ems="10"
+            android:inputType="textPersonName" />
+
+    </com.google.android.material.textfield.TextInputLayout>
+
+    <com.google.android.material.textfield.TextInputLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:ems="10"
-        android:hint="@string/create_amount"
-        android:inputType="numberDecimal|numberSigned" />
+        app:prefixText="$"
+        app:prefixTextAppearance="@style/TextAppearance.AppCompat.Medium"
+        android:hint="@string/create_amount">
+
+        <com.google.android.material.textfield.TextInputEditText
+            android:id="@+id/etCreateTransactionAmount"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:ems="10"
+            android:inputType="numberDecimal|numberSigned" />
+
+    </com.google.android.material.textfield.TextInputLayout>
 
     <Spinner
         android:id="@+id/spinner_categories"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:spinnerMode="dropdown"
-        android:layout_marginTop="10dp"/>
+        android:layout_marginTop="10dp"
+        android:spinnerMode="dropdown" />
 
 </LinearLayout>
