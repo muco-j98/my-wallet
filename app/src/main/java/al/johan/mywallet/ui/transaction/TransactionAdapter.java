@@ -1,4 +1,4 @@
-package al.johan.mywallet;
+package al.johan.mywallet.ui.transaction;
 
 import android.view.LayoutInflater;
 import android.view.View;
@@ -6,9 +6,12 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.List;
 
+import al.johan.mywallet.R;
+import al.johan.mywallet.data.db.entities.Transaction;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 

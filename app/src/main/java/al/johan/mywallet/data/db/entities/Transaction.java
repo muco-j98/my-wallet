@@ -1,17 +1,10 @@
-package al.johan.mywallet;
+package al.johan.mywallet.data.db.entities;
 
-import androidx.annotation.InspectableProperty;
 import androidx.room.Entity;
 import androidx.room.PrimaryKey;
 
 @Entity(tableName = "transaction_table")
 public class Transaction {
-
-    private static final String FOOD_CATEGORY = "food";
-    private static final String TRANSPORT_CATEGORY = "transport";
-    private static final String CLOTHING_CATEGORY = "clothing";
-    private static final String HOUSING_CATEGORY = "housing";
-
 
     @PrimaryKey(autoGenerate = true)
     private int id;

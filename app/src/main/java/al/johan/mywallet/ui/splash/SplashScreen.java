@@ -1,5 +1,6 @@
-package al.johan.mywallet;
+package al.johan.mywallet.ui.splash;
 
+import al.johan.mywallet.ui.home.MainActivity;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.Intent;

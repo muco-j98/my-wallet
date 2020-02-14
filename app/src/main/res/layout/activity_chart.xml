@@ -1,16 +1,97 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="@color/colorPrimary"
     android:orientation="vertical"
-    tools:context=".ChartActivity">
+    tools:context=".ui.chart.ChartActivity">
 
-    <com.github.mikephil.charting.charts.PieChart
-        android:id="@+id/piechart"
+    <TextView
+        android:id="@+id/tVNoTransactions"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:layout_marginTop="280dp"
+        android:text="@string/no_expenses_for_this_month"
+        android:textColor="@color/colorAccent"
+        android:textSize="25sp"
+        android:visibility="gone" />
+
+    <ImageView
+        android:id="@+id/iVNoTransactions"
+        android:layout_width="60dp"
+        android:layout_height="60dp"
+        android:layout_gravity="center"
+        android:src="@drawable/sad"
+        android:visibility="gone" />
+
+    <LinearLayout
+        android:id="@+id/chart_layout"
         android:layout_width="match_parent"
-        android:layout_height="430dp"
-        android:layout_margin="10dp" />
+        android:layout_height="wrap_content"
+        android:orientation="vertical">
+
+        <com.github.mikephil.charting.charts.PieChart
+            android:id="@+id/piechart"
+            android:layout_width="match_parent"
+            android:layout_height="320dp"
+            android:layout_margin="10dp" />
+
+        <RelativeLayout
+            android:id="@+id/rLCategoryAmount"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content">
+
+            <com.google.android.material.textview.MaterialTextView
+                android:id="@+id/tVTotalAmountString"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="10dp"
+                android:text="@string/total_amount_spent_on"
+                android:textColor="@color/colorAccent"
+                android:textSize="17sp" />
+
+            <com.google.android.material.textview.MaterialTextView
+                android:id="@+id/tVCategoryNameVariable"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignTop="@+id/tVTotalAmountString"
+                android:layout_marginStart="2dp"
+                android:layout_toEndOf="@+id/tVTotalAmountString"
+                android:text="..."
+                android:textAppearance="@font/amiko_bold"
+                android:textColor="@color/colorAccent"
+                android:textSize="17sp" />
+
+            <com.google.android.material.textview.MaterialTextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignTop="@+id/tVTotalAmountString"
+                android:layout_toEndOf="@+id/tVCategoryNameVariable"
+                android:text="@string/semicolon"
+                android:textAppearance="@font/amiko_bold"
+                android:textColor="@color/colorAccent"
+                android:textSize="17sp" />
+
+            <com.google.android.material.textview.MaterialTextView
+                android:id="@+id/tvAmountPerCategory"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentEnd="true"
+                android:layout_marginEnd="10dp"
+                android:textAppearance="@font/amiko_bold"
+                android:textColor="@color/colorAccent"
+                android:textSize="17sp" />
+
+        </RelativeLayout>
+
+        <TextView
+            android:id="@+id/tVNoCategorySelected"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/select_a_category_for_more_info"
+            android:visibility="gone" />
+    </LinearLayout>
 
 </LinearLayout>

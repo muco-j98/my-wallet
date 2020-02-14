@@ -1,18 +1,15 @@
-package al.johan.mywallet;
+package al.johan.mywallet.ui.initial;
 
+import al.johan.mywallet.R;
+import al.johan.mywallet.ui.home.MainActivity;
 import androidx.appcompat.app.AppCompatActivity;
 
-import android.app.Activity;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
-import android.widget.TextView;
-import android.widget.Toast;
-
-import javax.xml.transform.Result;
 
 public class InitialActivity extends AppCompatActivity {
     EditText etInitialAmount;
@@ -56,6 +53,7 @@ public class InitialActivity extends AppCompatActivity {
         editor.apply();
     }
 
+    //Does not allow user to press the back button in the initial activity
     @Override
     public void onBackPressed() {
 

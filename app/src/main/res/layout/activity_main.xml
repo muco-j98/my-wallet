@@ -4,13 +4,20 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/colorPrimaryDark"
-    tools:context=".MainActivity">
+    android:background="@color/colorPrimary"
+    tools:context=".ui.home.MainActivity">
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:orientation="vertical">
+
+        <Spinner
+            android:id="@+id/monthSpinner"
+            android:layout_width="wrap_content"
+            android:layout_gravity="top|end"
+            android:layout_margin="5dp"
+            android:layout_height="wrap_content" />
 
         <LinearLayout
             android:layout_width="match_parent"
@@ -31,8 +38,9 @@
                 android:fontFamily="@font/amiko_bold"
                 android:maxLines="1"
                 android:text="123.4"
-                android:textColor="#FFF"
+                android:textColor="@color/colorAccentLight"
                 android:textSize="28sp" />
+
         </LinearLayout>
 
         <androidx.recyclerview.widget.RecyclerView
@@ -48,7 +56,7 @@
             android:gravity="center_horizontal"
             android:text="@string/no_transactions"
             android:textColor="#FFF"
-            android:textSize="25sp" />
+            android:textSize="22sp" />
 
         <TextView
             android:id="@+id/tVEmptyTransactionDesc"

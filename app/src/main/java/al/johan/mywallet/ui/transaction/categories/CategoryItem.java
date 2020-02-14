@@ -1,4 +1,4 @@
-package al.johan.mywallet;
+package al.johan.mywallet.ui.transaction.categories;
 
 public class CategoryItem {
     private String categoryName;

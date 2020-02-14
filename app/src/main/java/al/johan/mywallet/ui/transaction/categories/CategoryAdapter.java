@@ -1,4 +1,4 @@
-package al.johan.mywallet;
+package al.johan.mywallet.ui.transaction.categories;
 
 import android.content.Context;
 import android.view.LayoutInflater;
@@ -10,6 +10,7 @@ import android.widget.TextView;
 
 import java.util.ArrayList;
 
+import al.johan.mywallet.R;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 
