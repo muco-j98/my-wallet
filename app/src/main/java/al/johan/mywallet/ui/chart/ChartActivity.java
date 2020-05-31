@@ -30,19 +30,22 @@ import com.github.mikephil.charting.utils.ColorTemplate;
 
 import java.text.DateFormat;
 import java.text.DecimalFormat;
+import java.text.NumberFormat;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
+import java.util.Locale;
 
 public class ChartActivity extends AppCompatActivity implements OnChartValueSelectedListener {
     PieChart mPieChart;
     float total_amount = 0, total_food = 0, total_transportation = 0, total_clothing = 0, total_housing = 0;
     final List<PieEntry> value = new ArrayList<>();
-    TextView tvCategoryNameVariable, tvAmountPerCategory, tVNoCategorySelected, tvNoExpenses;
-    ImageView iVNoTransactions;
+    TextView tvCategoryNameVariable, tvAmountPerCategory, tVNoCategorySelected, tvNoExpenses, tvMonthLabel, tvMonthTotal;
     RelativeLayout rLCategoryAmount;
+    LinearLayout lLChartLayout;
+    private static final DecimalFormat FORMAT = new DecimalFormat("$#.00");
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -54,10 +57,16 @@ public class ChartActivity extends AppCompatActivity implements OnChartValueSele
         tvCategoryNameVariable = findViewById(R.id.tVCategoryNameVariable);
         tVNoCategorySelected = findViewById(R.id.tVNoCategorySelected);
         tvNoExpenses = findViewById(R.id.tVNoTransactions);
-        iVNoTransactions = findViewById(R.id.iVNoTransactions);
         rLCategoryAmount = findViewById(R.id.rLCategoryAmount);
+        tvMonthLabel = findViewById(R.id.chart_month_label);
+        tvMonthTotal = findViewById(R.id.chart_month_total);
+        lLChartLayout = findViewById(R.id.chart_layout);
+
 
         String monthNumber = getIntent().getStringExtra("SELECTED_MONTH_NUMBER");
+        String monthLabel = getIntent().getStringExtra("SELECTED_MONTH_LABEL");
+
+        tvMonthLabel.setText(monthLabel);
 
         TransactionViewModel transactionViewModel = ViewModelProviders.of(this).get(TransactionViewModel.class);
         transactionViewModel.getAllNegativeTransactionsByMonth(monthNumber).observe(this, new Observer<List<Transaction>>() {
@@ -80,11 +89,11 @@ public class ChartActivity extends AppCompatActivity implements OnChartValueSele
 
                 if (transactions.size() != 0) {
                     chartStyling();
+                    total_amount = (float) (Math.round(total_amount * 100.0) / 100.0);
+                    tvMonthTotal.setText(NumberFormat.getCurrencyInstance(Locale.US).format(-1 * total_amount));
                 } else {
-                    mPieChart.setVisibility(View.GONE);
-                    rLCategoryAmount.setVisibility(View.GONE);
+                    lLChartLayout.setVisibility(View.GONE);
                     tvNoExpenses.setVisibility(View.VISIBLE);
-                    iVNoTransactions.setVisibility(View.VISIBLE);
                 }
             }
         });
@@ -135,7 +144,7 @@ public class ChartActivity extends AppCompatActivity implements OnChartValueSele
 
     @Override
     public void onValueSelected(Entry e, Highlight h) {
-        float y =e.getY();
+        float y = e.getY();
         PieEntry pe = (PieEntry) e;
         double categoryAmount = -1 * (y * total_amount);
         categoryAmount = Math.round(categoryAmount * 100.0) / 100.0;

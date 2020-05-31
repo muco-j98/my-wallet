@@ -17,6 +17,7 @@ import androidx.recyclerview.widget.ItemTouchHelper;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import android.annotation.SuppressLint;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
@@ -75,7 +76,7 @@ public class MainActivity extends AppCompatActivity implements CreateTransaction
 
         loadData();
 
-        DateFormat sortable = new SimpleDateFormat("MM");
+        @SuppressLint("SimpleDateFormat") DateFormat sortable = new SimpleDateFormat("MM");
         Date now = Calendar.getInstance().getTime();
         final String currentMonth = sortable.format(now);
 
@@ -231,6 +232,7 @@ public class MainActivity extends AppCompatActivity implements CreateTransaction
             public void onClick(View v) {
                 Intent intent = new Intent(getApplicationContext(), ChartActivity.class);
                 intent.putExtra("SELECTED_MONTH_NUMBER", SELECTED_MONTH_NUMBER);
+                intent.putExtra("SELECTED_MONTH_LABEL", monthsSpinner.getSelectedItem().toString());
                 startActivity(intent);
             }
         });

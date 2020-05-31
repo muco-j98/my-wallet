@@ -8,8 +8,9 @@
     <string name="description">Description</string>
     <string name="no_transactions">No Transactions During This Month</string>
     <string name="add_a_transaction_by_pressing_the_button">Add a transaction by pressing the + button</string>
-    <string name="total_amount_spent_on">Total amount spent on</string>
+    <string name="total_amount_spent_on">Amount spent on</string>
     <string name="semicolon">:</string>
     <string name="select_a_category_for_more_info">Select a category for more info.</string>
     <string name="no_expenses_for_this_month">No expenses for this month</string>
+    <string name="total_expenses_for">Total expenses for</string>
 </resources>
