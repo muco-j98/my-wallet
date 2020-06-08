@@ -1,14 +1,13 @@
 package al.johan.mywallet.ui.home;
 
 import al.johan.mywallet.ui.chart.ChartActivity;
+import al.johan.mywallet.ui.intro.IntroActivity;
 import al.johan.mywallet.ui.transaction.CreateTransactionDialog;
-import al.johan.mywallet.ui.initial.InitialActivity;
 import al.johan.mywallet.R;
 import al.johan.mywallet.data.db.entities.Transaction;
 import al.johan.mywallet.ui.transaction.TransactionAdapter;
 import al.johan.mywallet.ui.transaction.TransactionViewModel;
 import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.lifecycle.LiveData;
 import androidx.lifecycle.Observer;
@@ -17,7 +16,6 @@ import androidx.recyclerview.widget.ItemTouchHelper;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
-import android.annotation.SuppressLint;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
@@ -43,23 +41,9 @@ public class MainActivity extends AppCompatActivity implements CreateTransaction
     private TransactionViewModel transactionViewModel;
     private TextView tvTotalAmount, tvEmpty, tvEmptyDesc;
     private FloatingActionButton btnChart;
-    double totalAmount, initialAmount;
-    private final int REQUEST_CODE = 1;
-    public static final String SHARED_PREFS = "sharedPrefs";
-    public static final String INITIAL_AMOUNT = "initialAmount";
+    double totalAmount;
     public static String SELECTED_MONTH_NUMBER;
     Spinner monthsSpinner;
-
-    @Override
-    protected void onResume() {
-        super.onResume();
-        SharedPreferences prefs = getSharedPreferences("prefs", MODE_PRIVATE);
-        boolean firstStart = prefs.getBoolean("firstStart", true);
-
-        if (firstStart) {
-            showInitialActivity();
-        }
-    }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -74,9 +58,10 @@ public class MainActivity extends AppCompatActivity implements CreateTransaction
         btnChart = findViewById(R.id.btnChart);
         monthsSpinner = findViewById(R.id.monthSpinner);
 
-        loadData();
+        btnChart.setVisibility(View.GONE);
 
-        @SuppressLint("SimpleDateFormat") DateFormat sortable = new SimpleDateFormat("MM");
+        //Get current month
+        DateFormat sortable = new SimpleDateFormat("MM");
         Date now = Calendar.getInstance().getTime();
         final String currentMonth = sortable.format(now);
 
@@ -186,6 +171,19 @@ public class MainActivity extends AppCompatActivity implements CreateTransaction
                         String monthName = parent.getItemAtPosition(position).toString();
                         String monthNumber = m.get(monthName);
                         SELECTED_MONTH_NUMBER = monthNumber;
+
+                        //too many observers, memory issue?
+                        transactionViewModel.getAllNegativeTransactionsByMonth(monthNumber).observe(MainActivity.this, new Observer<List<Transaction>>() {
+                            @Override
+                            public void onChanged(List<Transaction> transactions) {
+                                if(!transactions.isEmpty()) {
+                                    btnChart.setVisibility(View.VISIBLE);
+                                } else {
+                                    btnChart.setVisibility(View.GONE);
+                                }
+                            }
+                        });
+
                         final LiveData<List<Transaction>> viewModelData = transactionViewModel.getTransactionsByMonth(monthNumber);
                         viewModelData.observe(MainActivity.this, new Observer<List<Transaction>>() {
                             @Override
@@ -230,25 +228,11 @@ public class MainActivity extends AppCompatActivity implements CreateTransaction
         btnChart.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intent = new Intent(getApplicationContext(), ChartActivity.class);
-                intent.putExtra("SELECTED_MONTH_NUMBER", SELECTED_MONTH_NUMBER);
-                intent.putExtra("SELECTED_MONTH_LABEL", monthsSpinner.getSelectedItem().toString());
-                startActivity(intent);
+                    Intent intent = new Intent(getApplicationContext(), ChartActivity.class);
+                    intent.putExtra("SELECTED_MONTH_NUMBER", SELECTED_MONTH_NUMBER);
+                    startActivity(intent);
             }
         });
-    }
-
-    @Override
-    protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
-        super.onActivityResult(requestCode, resultCode, data);
-        if (requestCode == REQUEST_CODE) {
-            if (resultCode == RESULT_OK) {
-                if (data != null) {
-                    initialAmount = data.getDoubleExtra("initialAmount", 0);
-                }
-                tvTotalAmount.setText(String.valueOf(roundToTwoDigits(initialAmount)));
-            }
-        }
     }
 
     private void openDialog() {
@@ -269,26 +253,11 @@ public class MainActivity extends AppCompatActivity implements CreateTransaction
     }
 
     public double calculateTotal(List<Transaction> transactions) {
-        totalAmount = initialAmount;
+        totalAmount = 0;
         for(int i = 0; i < transactions.size(); i++) {
             totalAmount += transactions.get(i).getAmount();
         }
         return roundToTwoDigits(totalAmount);
-    }
-
-    public void loadData() {
-        SharedPreferences sharedPreferences = getSharedPreferences(SHARED_PREFS, MODE_PRIVATE);
-        initialAmount = sharedPreferences.getFloat(INITIAL_AMOUNT, 0);
-    }
-
-    private void showInitialActivity() {
-        final Intent intent = new Intent(this, InitialActivity.class);
-        startActivityForResult(intent, REQUEST_CODE);
-
-        SharedPreferences prefs = getSharedPreferences("prefs", MODE_PRIVATE);
-        SharedPreferences.Editor editor = prefs.edit();
-        editor.putBoolean("firstStart", false);
-        editor.apply();
     }
 
     public double roundToTwoDigits(double number) {
