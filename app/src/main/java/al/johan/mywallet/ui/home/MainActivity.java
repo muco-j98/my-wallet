@@ -16,6 +16,7 @@ import androidx.recyclerview.widget.ItemTouchHelper;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import android.annotation.SuppressLint;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
@@ -42,8 +43,14 @@ public class MainActivity extends AppCompatActivity implements CreateTransaction
     private TextView tvTotalAmount, tvEmpty, tvEmptyDesc;
     private FloatingActionButton btnChart;
     double totalAmount;
-    public static String SELECTED_MONTH_NUMBER;
+    public String SELECTED_MONTH_NUMBER;
     Spinner monthsSpinner;
+
+    //Get current month
+    @SuppressLint("SimpleDateFormat")
+    DateFormat sortable = new SimpleDateFormat("MM");
+    Date now = Calendar.getInstance().getTime();
+    final String currentMonth = sortable.format(now);
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -59,11 +66,6 @@ public class MainActivity extends AppCompatActivity implements CreateTransaction
         monthsSpinner = findViewById(R.id.monthSpinner);
 
         btnChart.setVisibility(View.GONE);
-
-        //Get current month
-        DateFormat sortable = new SimpleDateFormat("MM");
-        Date now = Calendar.getInstance().getTime();
-        final String currentMonth = sortable.format(now);
 
         FloatingActionButton btnAddTransaction = findViewById(R.id.btnAddTransaction);
         btnAddTransaction.setOnClickListener(new View.OnClickListener() {
@@ -172,7 +174,7 @@ public class MainActivity extends AppCompatActivity implements CreateTransaction
                         String monthNumber = m.get(monthName);
                         SELECTED_MONTH_NUMBER = monthNumber;
 
-                        //too many observers, memory issue?
+                        //too many observers created, memory issue?
                         transactionViewModel.getAllNegativeTransactionsByMonth(monthNumber).observe(MainActivity.this, new Observer<List<Transaction>>() {
                             @Override
                             public void onChanged(List<Transaction> transactions) {
@@ -246,10 +248,21 @@ public class MainActivity extends AppCompatActivity implements CreateTransaction
         Date now = Calendar.getInstance().getTime();
         String timestampish = sortable.format(now);
 
+        setCurrentMonth();
+
         Transaction transaction = new Transaction(description, amount, timestampish, category);
         transactionViewModel.insert(transaction);
 
         Toast.makeText(this, "Transaction added!", Toast.LENGTH_SHORT).show();
+    }
+
+    //If the month is set to a different other than the current month, it changes to the current one
+    //after creating a transaction
+    public void setCurrentMonth() {
+        if (!SELECTED_MONTH_NUMBER.equals(currentMonth)) {
+            int Position = Integer.parseInt(currentMonth) - 1;
+            monthsSpinner.setSelection(Position);
+        }
     }
 
     public double calculateTotal(List<Transaction> transactions) {

@@ -15,6 +15,7 @@ import android.widget.Toast;
 import com.google.android.material.textfield.TextInputEditText;
 
 import java.util.ArrayList;
+import java.util.Objects;
 
 import al.johan.mywallet.ui.transaction.categories.CategoryAdapter;
 import al.johan.mywallet.ui.transaction.categories.CategoryItem;
@@ -72,6 +73,7 @@ public class CreateTransactionDialog extends AppCompatDialogFragment {
                     @Override
                     public void onClick(DialogInterface dialogInterface, int i) {
                         saveTransaction();
+
                     }
                 });
 
@@ -106,9 +108,9 @@ public class CreateTransactionDialog extends AppCompatDialogFragment {
     }
 
     private void saveTransaction() {
-        String description = etDescription.getText().toString().trim();
+        String description = Objects.requireNonNull(etDescription.getText()).toString().trim();
 
-        if (description.isEmpty() || etAmount.getText().toString().trim().isEmpty()) {
+        if (description.isEmpty() || Objects.requireNonNull(etAmount.getText()).toString().trim().isEmpty()) {
             Toast.makeText(getContext(), "Please insert a title and a value", Toast.LENGTH_SHORT).show();
         } else if (Double.parseDouble(etAmount.getText().toString()) == 0 ) {
             Toast.makeText(getContext(), "The amount cannot be 0", Toast.LENGTH_SHORT).show();
