@@ -1,8 +1,9 @@
 package al.johan.mywallet.ui.intro
 
+import al.johan.mywallet.R
 import al.johan.mywallet.ui.home.MainActivity
 import android.content.Intent
-import androidx.appcompat.app.AppCompatActivity
+import android.graphics.Color
 import android.os.Bundle
 import androidx.fragment.app.Fragment
 import com.github.appintro.AppIntro
@@ -16,12 +17,20 @@ class IntroActivity : AppIntro() {
         isWizardMode = true
 
         addSlide(AppIntroFragment.newInstance(
-                title = "Welcome...",
-                description = "This is the first slide of the example"
+                title = "Welcome!",
+                description = "Add Positive Transactions By Pressing The + Button",
+                imageDrawable = R.drawable.wally_positive_screenshot,
+                backgroundColor = resources.getColor(R.color.colorPrimary)
         ))
         addSlide(AppIntroFragment.newInstance(
-                title = "...Let's get started!",
-                description = "This is the last slide, I won't annoy you more :)"
+                description = "Add Negative Transactions By Adding A \"-\" Sign",
+                imageDrawable = R.drawable.wally_negative_screenshot,
+                backgroundColor = resources.getColor(R.color.colorPrimary)
+        ))
+        addSlide(AppIntroFragment.newInstance(
+                description = "View In-depth Chart For Your Expenses",
+                imageDrawable = R.drawable.wally_chart_screen,
+                backgroundColor = resources.getColor(R.color.colorPrimary)
         ))
     }
 
